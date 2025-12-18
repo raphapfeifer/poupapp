@@ -4,7 +4,7 @@ import { ModalComponent } from "../../../compartilhados/modal/modal.component";
 
 @Component({
   selector: 'app-botao-adicionar-transacao',
-  imports: [BotaoComponent, ModalComponent],
+  imports: [ModalComponent, BotaoComponent],
   templateUrl: './botao-adicionar-transacao.component.html',
   styleUrl: './botao-adicionar-transacao.component.css'
 })
