@@ -1,10 +1,9 @@
 
-<!--<dialog #modal class="dialog">
+<dialog #modal class="dialog" (close)="fecharModal()">
     <button class="fechar-modal" (click)="fecharModal()">
         <img src="icones/fechar.svg" alt="">
     </button>
-    Oi
-</dialog> -->
+
 <div class="conteudo">
     <div class="cabecalho">
         <ng-content select="[modal-cabecalho]">
@@ -18,3 +17,4 @@
         </ng-content>
     </div>
 </div>
+</dialog>

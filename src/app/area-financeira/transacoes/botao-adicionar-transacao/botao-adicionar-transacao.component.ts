@@ -1,10 +1,11 @@
-import { Component, effect, signal } from '@angular/core';
+import { afterRender, Component, effect, signal } from '@angular/core';
 import { BotaoComponent } from '../../../compartilhados/botao/botao.component';
 import { ModalComponent } from "../../../compartilhados/modal/modal.component";
+import { FormsModule } from "@angular/forms";
 
 @Component({
   selector: 'app-botao-adicionar-transacao',
-  imports: [ModalComponent, BotaoComponent],
+  imports: [ModalComponent, BotaoComponent, FormsModule],
   templateUrl: './botao-adicionar-transacao.component.html',
   styleUrl: './botao-adicionar-transacao.component.css'
 })
@@ -12,8 +13,26 @@ export class BotaoAdicionarTransacaoComponent {
 
   modalAberto = signal(false);
 
+  novaTransacaoForm = {
+    nome: '',
+    tipo: '',
+    valor: '',
+    data: '',
+    conta: ''
+  }
+
+  constructor(){
+    afterRender(() => {
+      console.log(this.modalAberto());
+    })
+  }
+
 
   abrirModal(){
     this.modalAberto.set(true);
+  }
+
+  aoSubmeter(){
+    console.log(this.novaTransacaoForm);
   }
 }
