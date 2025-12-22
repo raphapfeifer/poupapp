@@ -1,4 +1,4 @@
-import { afterRender, Component, signal } from '@angular/core';
+import { afterRender, Component, output, signal } from '@angular/core';
 import { BotaoComponent } from '../../../compartilhados/botao/botao.component';
 import { ModalComponent } from "../../../compartilhados/modal/modal.component";
 import { FormsModule } from "@angular/forms";
@@ -25,6 +25,8 @@ export class BotaoAdicionarTransacaoComponent {
 
   tiposTransacao = TipoTransacao;
 
+  transacaoCriada = output<Transacao>();
+
   constructor(){
     afterRender(() => {
       console.log(this.modalAberto());
@@ -45,6 +47,7 @@ export class BotaoAdicionarTransacaoComponent {
       this.novaTransacaoForm.conta
     );
 
-    console.log(novaTransacao);
+    this.transacaoCriada.emit(novaTransacao);
+    this.modalAberto.set(false);
 }
 }
