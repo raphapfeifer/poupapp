@@ -15,61 +15,9 @@ export class AreaFinanceiraComponent {
   saldo = 30;
 
   transacoes = signal<Transacao[]>([
-    {
-      id: '5',
-      nome: '',
-      tipo: TipoTransacao.SAQUE,
-      valor: 200,
-      data: new Date('2025-02-20T00:00'),
-      conta: 'Switch Bank'
-    },
-    {
-      id: '4',
-      nome: 'Almoço',
-      tipo: TipoTransacao.SAQUE,
-      valor: 40,
-      data: new Date('2025-01-15T00:00'),
-      conta: 'Bytebank'
-    },
-    {
-      id: '3',
-      nome: '',
-      tipo: TipoTransacao.DEPOSITO,
-      valor: 400,
-      data: new Date('2025-01-10T00:00'),
-      conta: 'Bytebank'
-    },
-    {
-      id: '2',
-      nome: 'Freela (2ª parte)',
-      tipo: TipoTransacao.DEPOSITO,
-      valor: 200,
-      data: new Date('2024-10-01T00:00'),
-      conta: 'Anybank'
-    },
-    {
-      id: '1',
-      nome: 'Freela (1ª parte)',
-      tipo: TipoTransacao.DEPOSITO,
-      valor: 100,
-      data: new Date('2024-10-01T00:00'),
-      conta: 'Anybank'
-    },
   ]);
 
   contasComSaldoInicial = signal<Conta[]>([
-    {
-      nome: 'Anybank',
-      saldo: 1000,
-    },
-    {
-      nome: 'Bytebank',
-      saldo: 0,
-    },
-    {
-      nome: 'Switch Bank',
-      saldo: 0,
-    },
   ]);
 
   contas = computed(() => {
@@ -80,8 +28,24 @@ export class AreaFinanceiraComponent {
     })
   })
 
-  calculaSaldoAtualizado(conta: Conta){
-    return conta.saldo + 20;
+  calculaSaldoAtualizado(contaInicial: Conta){
+    const trasacoesDaConta = this.transacoes().filter((transacao) => {
+      return transacao.conta == contaInicial.nome;
+    })
+
+    const novoSaldo = trasacoesDaConta.reduce((acc, transacao) => {
+      switch (transacao.tipo){
+        case TipoTransacao.DEPOSITO:
+          return acc + transacao.valor;
+        case TipoTransacao.SAQUE:
+          return acc - transacao.valor;
+        default:
+          transacao.tipo satisfies never;
+          throw new Error('Tipo de transação não identificado')
+      }
+    }, contaInicial.saldo);
+
+    return novoSaldo;
   }
 
   processarTransacao(transacao: Transacao){
