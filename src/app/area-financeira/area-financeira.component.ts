@@ -12,7 +12,13 @@ import { Transacao, TipoTransacao } from './compartilhados/transacao.model';
   styleUrl: './area-financeira.component.css'
 })
 export class AreaFinanceiraComponent {
-  saldo = 30;
+
+  saldo = computed(() => {
+    const saldoTotal = this.contas().reduce((acc, conta) => {
+      return acc + conta.saldo;
+    }, 0);
+    return saldoTotal
+  })
 
   transacoes = signal<Transacao[]>([
   ]);
@@ -27,7 +33,7 @@ export class AreaFinanceiraComponent {
       return { ...conta, saldo: saldoAtualizado}
     })
   })
-
+  
   calculaSaldoAtualizado(contaInicial: Conta){
     const trasacoesDaConta = this.transacoes().filter((transacao) => {
       return transacao.conta == contaInicial.nome;
